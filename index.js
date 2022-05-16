@@ -1,7 +1,12 @@
-//1) front end should get list of file names.
-//2) remove extension from file name 
-//3) add endpoint to backend to get image by name(figure out how to include name of image in route /images/{name})
+//X) front end should get list of file names.
+//X) remove extension from file name 
+//X) add endpoint to backend to get image by name(figure out how to include name of image in route /images/{name})
 //4) front end request each image by name from backend(show image on screen)
+
+//make array with name: URL: id:
+// front end = client backend = server
+//VERB GET give, POST create, PUT update, DELETE delete
+// http://loot.tarkovmap.com:3000/api/v1/items
 
 import ImageRepository from "./src/imageRepository.js";
 import express from 'express';
@@ -33,24 +38,38 @@ let items = [
 
 var repo = new ImageRepository();
 var myImages = repo.readImageFileNames();
-console.log(myImages);
-let movies = [
-  {
-    id: "1",
-    title: "Inception",
-    director: "Christopher Nolan",
-    release_date: "2010-07-16",
-  },
-  {
-    id: "2",
-    title: "The Irishman",
-    director: "Martin Scorsese",
-    release_date: "2019-09-27",
-  },
-];
+var workingFilePaths = repo.readImageFileNames();
+var images = [];
+var imagesWithFilePaths = [];
 
-app.get("/items", (req, res) => {
-  res.json(items);
+console.log(myImages);
+
+// myImages.forEach((element, index) => {
+//   element = element.replace(/\.[^/.]+$/, "");
+//   var thing = {
+//     item : element
+//   }
+//   images.push(thing);
+// })
+
+workingFilePaths.forEach((element, index) => {
+  // var imageURL = repo.folderPath() + element
+  var imageURL = 'http://localhost:3000/images/items/' + element
+  var imageName = element.replace(/\.[^/.]+$/, "");
+  var thing = {
+    image: imageName,
+    url : imageURL,
+    id: index
+  }
+  images.push(thing);
+})
+
+app.get("/images", (req, res) => {
+  res.json(images);
+});
+
+app.get("/imagesWithFilePaths", (req, res) => {
+  res.json(imagesWithFilePaths);
 });
 
 //get api

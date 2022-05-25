@@ -41,8 +41,9 @@ var myImages = repo.readImageFileNames();
 var workingFilePaths = repo.readImageFileNames();
 var images = [];
 var imagesWithFilePaths = [];
+console.log(repo);
 
-console.log(myImages);
+// console.log(myImages);
 
 // myImages.forEach((element, index) => {
 //   element = element.replace(/\.[^/.]+$/, "");
@@ -54,7 +55,8 @@ console.log(myImages);
 
 workingFilePaths.forEach((element, index) => {
   // var imageURL = repo.folderPath() + element
-  var imageURL = 'http://localhost:3000/images/items/' + element
+  // var imageURL = 'http://localhost:3000/images/items/' + element
+  var imageURL = 'http://localhost:3000/images/' + element
   var imageName = element.replace(/\.[^/.]+$/, "");
   var thing = {
     image: imageName,
@@ -62,10 +64,36 @@ workingFilePaths.forEach((element, index) => {
     id: index
   }
   images.push(thing);
+  // console.log(thing);
 })
-
+//"/images" is the route
+//get is the method
 app.get("/images", (req, res) => {
   res.json(images);
+});
+
+app.get("/image/:imageName", (req, res) => {
+
+  var options = {
+    root: repo.imageDirectory,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  var fileName = req.params.imageName
+  res.sendFile(fileName, options, function(err){
+    if (err){
+      console.log(err);
+    }
+    else{
+      console.log('sent: ', fileName );
+    }
+  })
+  // console.log(req.params);
+  // res.json(req.params.name);
 });
 
 app.get("/imagesWithFilePaths", (req, res) => {

@@ -56,7 +56,7 @@ console.log(repo);
 workingFilePaths.forEach((element, index) => {
   // var imageURL = repo.folderPath() + element
   // var imageURL = 'http://localhost:3000/images/items/' + element
-  var imageURL = 'http://localhost:3000/images/' + element
+  var imageURL = 'http://localhost:3000/image/' + element
   var imageName = element.replace(/\.[^/.]+$/, "");
   var thing = {
     image: imageName,
